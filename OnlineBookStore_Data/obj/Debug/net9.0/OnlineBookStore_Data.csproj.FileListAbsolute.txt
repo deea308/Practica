@@ -1,0 +1,17 @@
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Data.deps.json
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Data.runtimeconfig.json
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Data.dll
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Data.pdb
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Entities.dll
+D:\Practica\OnlineBookStore_Data\bin\Debug\net9.0\OnlineBookStore_Entities.pdb
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.csproj.AssemblyReference.cache
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.AssemblyInfoInputs.cache
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.AssemblyInfo.cs
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.csproj.CoreCompileInputs.cache
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBo.13D1B80A.Up2Date
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.dll
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\refint\OnlineBookStore_Data.dll
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.pdb
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\OnlineBookStore_Data.genruntimeconfig.cache
+D:\Practica\OnlineBookStore_Data\obj\Debug\net9.0\ref\OnlineBookStore_Data.dll

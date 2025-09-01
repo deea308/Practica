@@ -1,0 +1,11 @@
+D:\Practica\OnlineBookStore_Entities\bin\Debug\net9.0\OnlineBookStore_Entities.deps.json
+D:\Practica\OnlineBookStore_Entities\bin\Debug\net9.0\OnlineBookStore_Entities.dll
+D:\Practica\OnlineBookStore_Entities\bin\Debug\net9.0\OnlineBookStore_Entities.pdb
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.GeneratedMSBuildEditorConfig.editorconfig
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.AssemblyInfoInputs.cache
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.AssemblyInfo.cs
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.csproj.CoreCompileInputs.cache
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.dll
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\refint\OnlineBookStore_Entities.dll
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\OnlineBookStore_Entities.pdb
+D:\Practica\OnlineBookStore_Entities\obj\Debug\net9.0\ref\OnlineBookStore_Entities.dll
