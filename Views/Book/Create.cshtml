@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Create New Book";
+}
+<h2>Create New Book</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label>Title</label>
+        <input name="title" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" class="form-control" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input name="price" type="number" step="0.01" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Author Name</label>
+        <input name="authorName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Genre Name</label>
+        <input name="genreName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Publisher Name</label>
+        <input name="publisherName" class="form-control" required />
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Cover (jpg/png/webp, max 2MB)</label>
+        <input type="file" name="cover" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>

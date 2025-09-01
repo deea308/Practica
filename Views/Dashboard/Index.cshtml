@@ -1,0 +1,16 @@
+﻿@model OnlineBookstore.ViewModels.DashboardStatsVm
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";   
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Statistics</h2>
+<ul>
+    <li>Books: @Model.BooksCount</li>
+    <li>Authors: @Model.AuthorsCount</li>
+    <li>Genres: @Model.GenresCount</li>
+    <li>Publishers: @Model.PublishersCount</li>
+    <li>Reviews: @Model.ReviewsCount</li>
+    <li>Users: @Model.UsersCount</li>
+</ul>

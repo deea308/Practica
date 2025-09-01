@@ -1,0 +1,49 @@
+﻿@model IEnumerable<OnlineBookStore_Entities.Book>
+@{
+    ViewData["Title"] = "Books";
+}
+<h2>Books</h2>
+
+
+<table class="table table-striped table-sm align-middle">
+    <thead>
+        <tr>
+            <th style="width:64px;"></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Publisher</th>
+            <th class="text-end">Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(b.CoverImagePath))
+                    {
+                        <img src="@b.CoverImagePath" alt="cover" style="height:48px;width:auto;" />
+                    }
+                    else
+                    {
+                        <img src="/img/placeholder-book.png" alt="no cover" style="height:48px;width:auto;" />
+                    }
+                </td>
+                <td>@b.Title</td>
+                <td>@(b.Author?.Name ?? "-")</td>
+                <td>@(b.Genre?.Name ?? "-")</td>
+                <td>@(b.Publisher?.Name ?? "-")</td>
+                <td class="text-end">@b.Price.ToString("C")</td>
+                <td class="text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@b.BookId">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@b.BookId" method="post" class="d-inline ms-2">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

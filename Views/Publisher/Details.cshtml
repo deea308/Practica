@@ -1,0 +1,39 @@
+﻿@model OnlineBookstore.ViewModels.PublisherDetailsVm
+
+<h1>@Model.Name</h1>
+
+<p><strong>Total books:</strong> @Model.BookCount</p>
+
+@if (!(Model.Books?.Any() ?? false))
+{
+    <p>No books for this publisher.</p>
+}
+else
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th class="text-end">Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in Model.Books)
+            {
+                <tr>
+                    <td>@b.Title</td>
+                    <td class="text-end">@b.Price.ToString("C")</td>
+                    <td>
+                        <a asp-controller="Home"
+                           asp-action="BookDetails"
+                           asp-route-id="@b.BookId"
+                           class="btn btn-sm btn-outline-secondary">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back</a>

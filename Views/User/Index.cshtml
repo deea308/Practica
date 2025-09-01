@@ -1,0 +1,34 @@
+﻿@model IEnumerable<OnlineBookStore_Entities.User>
+
+<h1>Users</h1>
+
+@if (!(Model?.Any() ?? false))
+{
+    <p>No users.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead><tr><th>Username</th><th>Email</th><th>Admin</th><th>Reviews</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Username</td>
+                    <td>@u.Email</td>
+                    <td>@(u.IsAdmin ? "Yes" : "No")</td>
+                    <td>@(u.Reviews?.Count ?? 0)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@u.UserId" class="btn btn-sm btn-outline-primary">Details</a>
+                        <a asp-action="Edit" asp-route-id="@u.UserId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@u.UserId" method="post"
+                              onsubmit="return confirm('Delete this user and all their data?');" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<OnlineBookStore_Entities.Order>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Orders";
+    var q = ViewBag.Query as string ?? "";
+    var status = ViewBag.Status as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int pageSize = ViewBag.PageSize ?? 20;
+}
+
+<h2>Orders</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-sm-4">
+        <input class="form-control" name="q" value="@q" placeholder="Search by id, name, address, email…" />
+    </div>
+    <div class="col-sm-3">
+        <select class="form-select" name="status">
+            <option value="">All statuses</option>
+            <option value="Pending" selected="@(status == "Pending")">Pending</option>
+            <option value="Shipped" selected="@(status == "Shipped")">Shipped</option>
+            <option value="Completed" selected="@(status == "Completed")">Completed</option>
+            <option value="Cancelled" selected="@(status == "Cancelled")">Cancelled</option>
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <button class="btn btn-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+
+@if (!(Model?.Any() ?? false))
+{
+    <div class="alert alert-info">No orders found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Placed</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th class="text-end">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in Model)
+                {
+                    <tr>
+                        <td>@o.OrderId</td>
+                        <td>@o.CreatedAt.ToLocalTime().ToString("g")</td>
+                        <td>
+                            <div>@o.ShipToName</div>
+                            <small class="text-muted">@o.User?.Email</small>
+                        </td>
+                        <td>@o.Status</td>
+                        <td class="text-end">@o.Total.ToString("C")</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@o.OrderId" class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Orders pagination">
+            <ul class="pagination">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Index", new { q = q, status = status, page = i, pageSize = pageSize })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

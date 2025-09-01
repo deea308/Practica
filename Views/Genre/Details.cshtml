@@ -1,0 +1,21 @@
+﻿@model OnlineBookStore_Entities.Genre
+
+<h1>@Model.Name</h1>
+
+@if (!(Model.Books?.Any() ?? false))
+{
+    <p>No books.</p>
+}
+else
+{
+    <ul>
+        @foreach (var b in Model.Books!)
+        {
+            <li>
+                <a asp-controller="Home" asp-action="BookDetails" asp-route-id="@b.BookId">
+                    @b.Title
+                </a>
+            </li>
+        }
+    </ul>
+}

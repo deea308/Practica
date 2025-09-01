@@ -1,0 +1,67 @@
+﻿@model OnlineBookStore_Entities.Book
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Edit Book</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="BookId" />
+    @* keep Author dropdown, but allow manual Publisher *@
+    @* <input type="hidden" asp-for="PublisherId" />  ← remove this *@
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AuthorId" class="form-label">Author</label>
+        <select asp-for="AuthorId" asp-items="ViewBag.Authors" class="form-select">
+            <option value="">-- Select an author --</option>
+        </select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Publisher</label>
+        <input name="PublisherName"
+               class="form-control"
+               value="@Model.Publisher?.Name"
+               placeholder="Type publisher name" />
+        <small class="text-muted">If it doesn't exist, it will be created.</small>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.CoverImagePath))
+    {
+        <div class="mb-2">
+            <img src="@Model.CoverImagePath" alt="Cover" style="max-height:140px" />
+        </div>
+    }
+    <div class="mb-3">
+        <label>Change cover</label>
+        <input type="file" name="cover" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

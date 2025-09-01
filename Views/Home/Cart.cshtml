@@ -1,0 +1,74 @@
+﻿@model List<OnlineBookstore.Models.SessionCartItem>
+@{
+    ViewData["Title"] = "Coș";
+    var hasItems = Model != null && Model.Any();
+    var total = hasItems ? Model.Sum(x => x.Price * x.Quantity) : 0m;
+}
+
+<h2 class="mb-4">Shopping cart</h2>
+
+@if (!hasItems)
+{
+    <div class="alert alert-info">
+        The cart is empty.
+        <a asp-controller="Home" asp-action="Index" class="alert-link">Continue shopping</a>.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th class="text-end">Price</th>
+                    <th style="width:220px;">Quantity</th>
+                    <th class="text-end">Subtotal</th>
+                    <th style="width:120px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@item.BookTitle</td>
+
+                        <td class="text-end">@item.Price.ToString("C")</td>
+
+                        <td>
+                            <form asp-action="UpdateCartItem" method="post" class="d-flex gap-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@item.BookId" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="0"
+                                       class="form-control form-control-sm" style="max-width:90px;" />
+                                <button type="submit" class="btn btn-sm btn-secondary"> Update</button>
+                            </form>
+                        </td>
+
+                        <td class="text-end">@((item.Price * item.Quantity).ToString("C"))</td>
+
+                        <td>
+                            <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@item.BookId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                    <td class="text-end fw-bold">@total.ToString("C")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Continue shopping</a>
+        <a asp-controller="Home" asp-action="Checkout" class="btn btn-primary">Pay</a>
+    </div>
+}

@@ -1,0 +1,132 @@
+﻿@model OnlineBookStore_Entities.User
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>My Profile</h1>
+
+<div class="d-flex align-items-center gap-3 mb-3">
+    <img src="@(string.IsNullOrEmpty(Model.AvatarPath) ? "/img/avatar-placeholder.png" : Model.AvatarPath)"
+         alt="Avatar" style="width:80px;height:80px;object-fit:cover;border-radius:50%;" />
+    <div>
+        <div><b>Username:</b> @Model.Username</div>
+        <div><b>Email:</b> @Model.Email</div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body d-flex align-items-center gap-2">
+        <form asp-action="UploadAvatar" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-2">
+            @Html.AntiForgeryToken()
+            <input type="file" name="avatar" accept=".jpg,.jpeg,.png,.webp" class="form-control" style="max-width:360px" />
+            <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.AvatarPath))
+        {
+            <form asp-action="RemoveAvatar" method="post" class="ms-2">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-outline-danger" type="submit">Remove</button>
+            </form>
+        }
+    </div>
+</div>
+
+@{
+    var orders = ViewBag.Orders as List<OnlineBookStore_Entities.Order> ?? new();
+    var favs = ViewBag.FavoriteBooks as List<OnlineBookStore_Entities.Book> ?? new();
+}
+
+<h3 class="mt-4">My Orders</h3>
+
+@if (orders.Count == 0)
+{
+    <p class="text-muted">You don’t have any orders yet.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th class="text-end">Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in orders)
+                {
+                    <tr>
+                        <td>@o.OrderId</td>
+                        <td>@o.CreatedAt.ToLocalTime().ToString("g")</td>
+                        <td>
+                            <ul class="mb-0">
+                                @foreach (var it in o.Items)
+                                {
+                                    <li>@it.BookTitle × @it.Quantity (@it.UnitPrice.ToString("C"))</li>
+                                }
+                            </ul>
+                        </td>
+                        <td class="text-end fw-semibold">@o.Total.ToString("C")</td>
+                        <td>@o.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<hr class="my-4 hr-soft" />
+
+<h3 class="mt-2">My Favourites</h3>
+@if (favs.Count == 0)
+{
+    <p class="text-muted">You haven’t added any favourites yet.</p>
+}
+else
+{
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        @foreach (var b in favs)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <a asp-controller="Home" asp-action="BookDetails" asp-route-id="@b.BookId">
+                        @if (!string.IsNullOrEmpty(b.CoverImagePath))
+                        {
+                            <img src="@b.CoverImagePath" class="card-img-top" alt="@b.Title cover"
+                                 style="height:180px;object-fit:cover;">
+                        }
+                        else
+                        {
+                            <img src="/img/placeholder-book.png" class="card-img-top" alt="no cover"
+                                 style="height:180px;object-fit:cover;">
+                        }
+                    </a>
+                    <div class="card-body">
+                        <div class="fw-semibold">@b.Title</div>
+                        <div class="text-muted small">@b.Author?.Name</div>
+                        <div class="fw-bold mt-1">@b.Price.ToString("C")</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<hr class="my-4 hr-soft" />
+
+<h3 class="mt-2">My Reviews</h3>
+@if (!(Model.Reviews?.Any() ?? false))
+{
+    <p>You haven't written any reviews yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var r in Model.Reviews.OrderByDescending(r => r.ReviewId))
+        {
+            <li><b>@r.Book?.Title</b> — @r.Rating/5<br />@r.Content</li>
+        }
+    </ul>
+}

@@ -1,0 +1,89 @@
+﻿@model OnlineBookStore_Entities.Order
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = $"Order #{Model.OrderId}";
+}
+
+<h2>Order #@Model.OrderId</h2>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div><strong>Placed:</strong> @Model.CreatedAt.ToLocalTime().ToString("f")</div>
+                <div><strong>Status:</strong> @Model.Status</div>
+                <div><strong>Payment:</strong> @Model.PaymentMethod</div>
+                <div><strong>Customer:</strong> @Model.ShipToName (@Model.User?.Email)</div>
+                <div class="mt-2">
+                    <strong>Ship to</strong><br />
+                    @Model.Address<br />
+                    @Model.City, @Model.PostalCode<br />
+                    Phone: @Model.Phone
+                </div>
+                <div class="mt-2"><strong>Total:</strong> @Model.Total.ToString("C")</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Actions</h5>
+                <form asp-action="SetStatus" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.OrderId" />
+                    <input type="hidden" name="status" value="Shipped" />
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Mark as Shipped</button>
+                </form>
+
+                <form asp-action="SetStatus" method="post" class="d-inline ms-2">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.OrderId" />
+                    <input type="hidden" name="status" value="Completed" />
+                    <button class="btn btn-sm btn-outline-success" type="submit">Complete</button>
+                </form>
+
+                <form asp-action="SetStatus" method="post" class="d-inline ms-2">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.OrderId" />
+                    <input type="hidden" name="status" value="Cancelled" />
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Items</h4>
+@if (!(Model.Items?.Any() ?? false))
+{
+    <p>No items.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Unit</th>
+                    <th class="text-end">Line</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.Items)
+                {
+                    <tr>
+                        <td>@i.BookTitle</td>
+                        <td class="text-end">@i.Quantity</td>
+                        <td class="text-end">@i.UnitPrice.ToString("C")</td>
+                        <td class="text-end">@((i.UnitPrice * i.Quantity).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary mt-2">Back to list</a>

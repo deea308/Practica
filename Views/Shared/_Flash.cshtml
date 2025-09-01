@@ -1,0 +1,33 @@
+﻿@* Renders any string in TempData as a Bootstrap alert and auto-dismisses it *@
+@{
+    var flashes = new List<(string Css, string Text)>();
+
+    foreach (var kv in TempData)
+    {
+        if (kv.Value is not string s || string.IsNullOrWhiteSpace(s))
+            continue;
+
+        var key = kv.Key.ToLowerInvariant();
+
+        // Map key names to Bootstrap alert styles
+        var css = key.Contains("success") || key == "toast" ? "alert-success"
+                : key.Contains("error") || key.Contains("danger") ? "alert-danger"
+                : key.Contains("warn") ? "alert-warning"
+                : "alert-info";
+
+        flashes.Add((css, s));
+    }
+}
+
+@if (flashes.Any())
+{
+    <div class="flash-container container-xxl pt-2">
+        @foreach (var f in flashes)
+        {
+            <div class="alert @f.Css alert-dismissible fade show flash" role="alert">
+                @f.Text
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+}

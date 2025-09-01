@@ -1,0 +1,49 @@
+﻿@* Views/Account/Register.cshtml *@
+@model OnlineBookstore.ViewModels.RegisterVm
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create account";
+    var returnUrl = ViewBag.ReturnUrl as string;
+}
+
+<h2>Create account</h2>
+
+<form asp-action="Register" method="post" class="row g-3">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+    <div class="col-md-6">
+        <label asp-for="Username" class="form-label"></label>
+        <input asp-for="Username" class="form-control" placeholder="yourname" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="you@email.com" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="ConfirmPassword" class="form-label"></label>
+        <input asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Create account</button>
+        <a asp-controller="Account" asp-action="Login" class="btn btn-link">I already have an account</a>
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

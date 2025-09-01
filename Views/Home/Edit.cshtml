@@ -1,0 +1,41 @@
+﻿@model OnlineBookStore_Entities.Book
+
+<h2>Edit Book</h2>
+
+<form asp-action="Edit" method="post">
+    @* Always post the key/FKs *@
+    <input type="hidden" asp-for="BookId" />
+    <input type="hidden" asp-for="AuthorId" />
+    <input type="hidden" asp-for="GenreId" />
+    <input type="hidden" asp-for="PublisherId" />
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <!-- read-only to user but we still post it so ModelState stays valid -->
+        <input class="form-control" value="@Model.Title" readonly />
+        <input type="hidden" name="Title" value="@Model.Title" />
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    @* Show validation errors if any *@
+    <div class="text-danger">
+        @Html.ValidationSummary(excludePropertyErrors: true)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+

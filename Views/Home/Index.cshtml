@@ -1,0 +1,136 @@
+﻿@model IEnumerable<OnlineBookStore_Entities.Book>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    var q = (string?)ViewBag.Query ?? "";
+    int page = (int)(ViewBag.Page ?? 1);
+    int totalPages = (int)(ViewBag.TotalPages ?? 1);
+    int pageSize = (int)(ViewBag.PageSize ?? 10);
+    decimal? minPrice = (decimal?)ViewBag.MinPrice;
+    decimal? maxPrice = (decimal?)ViewBag.MaxPrice;
+    int? currentGenreId = (int?)ViewBag.SelectedGenreId;
+
+    var favIds = (IEnumerable<int>)(ViewBag.FavIds as IEnumerable<int> ?? Enumerable.Empty<int>());
+}
+
+<h2 class="mb-3">Books</h2>
+<div class="hero-pp mb-3">
+    <strong>Welcome!</strong> Explore our latest titles.
+</div>
+
+<form method="get" asp-action="Index" class="mb-3">
+    <div class="input-group mb-2">
+        <input type="text" name="q" value="@q" class="form-control" placeholder="Search by title or author" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+    <div class="row g-2 align-items-end">
+        <div class="col-12 col-md-4">
+            <label class="form-label">Genre</label>
+            <select name="genreId" class="form-select" asp-items="ViewBag.GenreSelect">
+                <option value="">All genres</option>
+            </select>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label class="form-label">Min price</label>
+            <input type="number" name="minPrice" step="0.01" min="0"
+                   value="@(minPrice?.ToString() ?? "")" class="form-control" />
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label class="form-label">Max price</label>
+            <input type="number" name="maxPrice" step="0.01" min="0"
+                   value="@(maxPrice?.ToString() ?? "")" class="form-control" />
+        </div>
+
+        <div class="col-12 col-md-2 d-grid">
+            <button type="submit" class="btn btn-outline-secondary">Filter</button>
+        </div>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <p>No matching books.</p>
+}
+else
+{
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        @foreach (var b in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <a asp-controller="Home" asp-action="BookDetails" asp-route-id="@b.BookId">
+                        @if (!string.IsNullOrEmpty(b.CoverImagePath))
+                        {
+                            <img src="@b.CoverImagePath" class="card-img-top" alt="@b.Title cover"
+                                 style="height:220px;object-fit:cover;">
+                        }
+                        else
+                        {
+                            <img src="/img/placeholder-book.png" class="card-img-top" alt="no cover"
+                                 style="height:220px;object-fit:cover;">
+                        }
+                    </a>
+
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title mb-1">
+                            <a class="text-decoration-none" asp-controller="Home" asp-action="BookDetails" asp-route-id="@b.BookId">
+                                @b.Title
+                            </a>
+                            <small class="text-muted"> — @b.Author?.Name</small>
+                        </h6>
+
+                        <div class="fw-bold mb-2 mt-auto">@b.Price.ToString("C")</div>
+
+                        <div class="card-actions">
+                            <form asp-controller="Home" asp-action="AddToCart" method="post" class="d-inline w-100">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@b.BookId" />
+                                <button type="submit" class="btn btn-primary btn-action w-100">Add to cart</button>
+                            </form>
+
+                            <a class="btn btn-outline-secondary btn-action w-100"
+                               asp-controller="Home" asp-action="BookDetails" asp-route-id="@b.BookId">Details</a>
+
+                            @{
+                                bool isFav = favIds.Contains(b.BookId);
+                                var btnClass = isFav ? "btn-danger" : "btn-outline-danger";
+                                var heart = isFav ? "♥" : "♡";
+                                var title = isFav ? "Remove from favourites" : "Add to favourites";
+                            }
+                            <form asp-controller="Favorites" asp-action="Toggle" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@b.BookId" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                <button type="submit" class="btn @btnClass btn-heart" title="@title" aria-label="@title">@heart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <nav class="mt-3" aria-label="Pagination">
+            <ul class="pagination">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var active = i == page ? "active" : "";
+                    <li class="page-item @active">
+                        <a class="page-link" href="@Url.Action("Index", new {
+                               q,
+                               page = i,
+                               genreId = currentGenreId,
+                               minPrice,
+                               maxPrice
+                           })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

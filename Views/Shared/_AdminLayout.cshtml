@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+    var title = ViewData["Title"] as string ?? "Admin";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@title - Admin</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <h1 class="admin-title">Admin</h1>
+        @await Html.PartialAsync("_AdminMenu")
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <small>&copy; @DateTime.Now.Year - OnlineBookstore Admin</small>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

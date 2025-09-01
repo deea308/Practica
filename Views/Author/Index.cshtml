@@ -1,0 +1,28 @@
+﻿@model IEnumerable<OnlineBookStore_Entities.Author>
+
+<h1>Authors</h1>
+
+@if (!(Model?.Any() ?? false))
+{
+    <p>No authors yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Name</th><th>Books</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.Name</td>
+                    <td>@(a.Books?.Count ?? 0)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@a.AuthorId" class="btn btn-sm btn-outline-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

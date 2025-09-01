@@ -1,0 +1,23 @@
+﻿@model OnlineBookStore_Entities.User
+
+<h1>@Model.Username</h1>
+<p><b>Email:</b> @Model.Email</p>
+<p><b>Admin:</b> @(Model.IsAdmin ? "Yes" : "No")</p>
+
+<h3>Reviews</h3>
+@if (!(Model.Reviews?.Any() ?? false))
+{
+    <p>No reviews.</p>
+}
+else
+{
+    <ul>
+        @foreach (var r in Model.Reviews.OrderByDescending(r => r.ReviewId))
+        {
+            <li>
+                <b>@r.Book?.Title</b> — @r.Rating/5<br />
+                @r.Content
+            </li>
+        }
+    </ul>
+}

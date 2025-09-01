@@ -1,0 +1,23 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Access denied";
+    var returnUrl = ViewBag.ReturnUrl as string;
+}
+<h2>Access denied</h2>
+<p>You don’t have permission to view this page.</p>
+
+@if (!string.IsNullOrEmpty(returnUrl))
+{
+    <p class="text-muted">Requested: <code>@returnUrl</code></p>
+}
+
+<div class="d-flex gap-2">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <form asp-controller="Account" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-outline-danger" type="submit">Log out</button>
+        </form>
+    }
+</div>
